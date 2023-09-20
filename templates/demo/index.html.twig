@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Date du Jour</title>
-</head>
-<body>
-<h1>{{ formattedDate|format_datetime('full', 'short', locale='fr') }}</h1>
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DemoController!{% endblock %}
+
+{% block body %}
+<h1>{{ 'now'|format_datetime('full', 'short') }}</h1>
+{% endblock %}
