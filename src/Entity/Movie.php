@@ -7,8 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['movie:read'],
+    ]
+)]
 class Movie
 {
     #[ORM\Id]
@@ -17,21 +23,27 @@ class Movie
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
+    #[groups(['movie:read'])]
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
+    #[groups(['movie:read'])]
     private Collection $actors;
 
     #[ORM\Column(length: 50)]
+    #[groups(['movie:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[groups(['movie:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[groups(['movie:read'])]
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\Column]
+    #[groups(['movie:read'])]
     private ?int $duration = null;
 
     public function __construct()
