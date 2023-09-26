@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
@@ -17,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         'groups' => ['movie:read'],
     ]
 )]
+
 class Movie
 {
     #[ORM\Id]
@@ -37,6 +41,7 @@ class Movie
     #[ORM\Column(length: 50)]
     #[Groups(['movie:read', 'actor:read', 'category:read'])]
     #[Assert\NotBlank(message: 'Title is required')]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -51,6 +56,7 @@ class Movie
     #[ORM\Column]
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'Duration is required')]
+    #[ApiFilter(RangeFilter::class)]
     private ?int $duration = null;
 
     public function __construct()
