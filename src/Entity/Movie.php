@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
@@ -26,14 +26,17 @@ class Movie
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'Category is required')]
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'At least one actor is required')]
     private Collection $actors;
 
     #[ORM\Column(length: 50)]
     #[Groups(['movie:read', 'actor:read', 'category:read'])]
+    #[Assert\NotBlank(message: 'Title is required')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -42,10 +45,12 @@ class Movie
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'Release date is required')]
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\Column]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'Duration is required')]
     private ?int $duration = null;
 
     public function __construct()
