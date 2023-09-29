@@ -26,6 +26,7 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['movie:read', 'actor:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
@@ -41,7 +42,7 @@ class Movie
     #[ORM\Column(length: 50)]
     #[Groups(['movie:read', 'actor:read', 'category:read'])]
     #[Assert\NotBlank(message: 'Title is required')]
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
