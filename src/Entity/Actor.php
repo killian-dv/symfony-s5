@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,6 +34,7 @@ class Actor
     #[ORM\Column(length: 50)]
     #[Groups(['movie:read', 'actor:read'])]
     #[Assert\NotBlank(message: 'Last name is required')]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $lastName = null;
 
     #[ORM\ManyToMany(targetEntity: Movie::class, mappedBy: 'actors')]
