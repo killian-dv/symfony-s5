@@ -49,7 +49,7 @@ class Movie
     #[Groups(['movie:read'])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, options: ['format' => 'Y-m-d'])]
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'Release date is required')]
     private ?\DateTimeInterface $releaseDate = null;
