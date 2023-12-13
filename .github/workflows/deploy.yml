@@ -25,4 +25,3 @@ jobs:
               composer install
               php bin/console c:c
               php bin/console d:s:u --force
-              php bin/console d:f:l
