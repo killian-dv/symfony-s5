@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: [
         'groups' => ['category:read'],
     ],
+    security: "is_granted('ROLE_USER')",
     operations: [
         new GetCollection(
             security: 'is_granted("ROLE_USER")',

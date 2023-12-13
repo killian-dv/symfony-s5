@@ -25,6 +25,7 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
     normalizationContext: [
         'groups' => ['movie:read'],
     ],
+    security: "is_granted('ROLE_USER')",
     operations: [
         new GetCollection(
             security: 'is_granted("ROLE_USER")',
@@ -46,7 +47,6 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
         )
     ]
 )]
-#[Security('is_granted("ROLE_USER")')]
 
 class Movie
 {
