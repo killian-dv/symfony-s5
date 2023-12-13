@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Demo LS on VPS
+      - name: Deploy symfony app
         uses: appleboy/ssh-action@master
         with:
             HOST: ${{ secrets.HOST }}
