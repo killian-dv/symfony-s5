@@ -7,19 +7,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy app
+      - uses: actions/checkout@v1
+      - name: Demo LS on MMI VPS
         uses: appleboy/ssh-action@master
         with:
-            HOST: ${{ secrets.HOST }}
-            USERNAME: ${{ secrets.USERNAME }}
-            PORT: ${{ secrets.PORT }}
-            KEY: ${{ secrets.SSHKEY }}
-            script: |
-              cd public_html/api-movies-app/
-              git pull
-              composer install --no-scripts --no-interaction
-              php bin/console cache:clear --env=dev
-              echo "Deployment successful!"
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script : ls
