@@ -10,27 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-
-      - name: Install dependencies
-        run: composer install --no-scripts --no-interaction
-
-      - name: Build
-        run: php bin/console cache:clear --env=dev
-
-      - name: 📂 SFTP uploader
-        uses: wangyucode/sftp-upload-action@v2.0.2
-        with:
-          host: ${{ secrets.SERVER }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          localDir: "./"
-          remoteDir: "./public_html/api-movies-app/"
-
-      - name: connect to db
+      - name: Demo LS on VPS
         uses: appleboy/ssh-action@master
         with:
             HOST: ${{ secrets.HOST }}
@@ -38,5 +18,10 @@ jobs:
             PORT: ${{ secrets.PORT }}
             KEY: ${{ secrets.SSHKEY }}
             script: |
-              cd public_html/api-movies-app/
-              echo "Deployment successful!"
+              cd public_html/
+              git clone git@github.com:killian-dv/symfony-s5.git
+              mv symfony-s5 api-movies-app
+              cd api-movies-app
+              git pull
+              composer install
+              php bin/console c:c
