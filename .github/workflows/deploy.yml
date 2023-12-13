@@ -19,8 +19,8 @@ jobs:
             KEY: ${{ secrets.SSHKEY }}
             script: |
               cd public_html/
-              git clone git@github.com:killian-dv/symfony-s5.git
-              mv symfony-s5 api-movies-app
+              git clone git@github.com:killian-dv/symfony-s5.git tmp_symfony_s5
+              mv tmp_symfony_s5 api-movies-app
               cd api-movies-app
               git pull
               composer install
