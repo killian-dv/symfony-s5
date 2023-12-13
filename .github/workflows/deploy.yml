@@ -7,28 +7,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up PHP
-#        uses: shivammathur/setup-php@v2
-#        with:
-#          php-version: '8.2'
-#
-#      - name: Install dependencies
-#        run: composer install --no-scripts --no-interaction
-#
-#      - name: Build
-#        run: php bin/console cache:clear --env=dev
-#
-#      - name: 📂 SFTP uploader
-#        uses: wangyucode/sftp-upload-action@v2.0.2
-#        with:
-#          host: ${{ secrets.SERVER }}
-#          username: ${{ secrets.USERNAME }}
-#          password: ${{ secrets.PASSWORD }}
-#          localDir: "./"
-#          remoteDir: "./home/mmi21g05/public_html/api-movies-app/"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install dependencies
+        run: composer install --no-scripts --no-interaction
+
+      - name: Build
+        run: php bin/console cache:clear --env=dev
+
+      - name: 📂 SFTP uploader
+        uses: wangyucode/sftp-upload-action@v2.0.2
+        with:
+          host: ${{ secrets.SERVER }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          localDir: "./"
+          remoteDir: "./public_html/api-movies-app/"
 
       - name: connect to db
         uses: appleboy/ssh-action@master
@@ -39,7 +39,4 @@ jobs:
             KEY: ${{ secrets.SSHKEY }}
             script: |
               cd public_html/api-movies-app/
-              git pull
-              composer install --no-scripts --no-interaction
-              php bin/console cache:clear --env=dev
               echo "Deployment successful!"
