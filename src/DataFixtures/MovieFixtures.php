@@ -16,7 +16,9 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
         foreach (range(1, 40)as $i){
             $movie = new Movie();
             $movie->setTitle('Movie ' . $i);
-            $movie->setReleaseDate(new \DateTime());
+            // Créez une date au format "yyyy-mm-jj"
+            $releaseDate = \DateTimeImmutable::createFromFormat('Y-m-d', '2023-12-31');
+            $movie->setReleaseDate($releaseDate);
             $movie->setDuration(rand(60, 180));
             $movie->setDescription('Synopsis ' . $i);
             $movie->setCategory($this->getReference('category_' . rand(1, 5)));
