@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\MovieRepository;
+use App\Serializer\MovieNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -28,19 +29,25 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     normalizationContext: [
         'groups' => ['movie:read'],
     ],
+    denormalizationContext: [
+        'groups' => ['movie:write'],
+    ],
     security: "is_granted('ROLE_USER')",
     operations: [
         new GetCollection(
             security: 'is_granted("ROLE_USER")',
+            serialize: MovieNormalizer::class,
         ),
         new Get(
             security: 'is_granted("ROLE_USER")',
+            serialize: MovieNormalizer::class,
         ),
         new Patch(
             security: 'is_granted("ROLE_ADMIN")',
         ),
         new Post(
             security: 'is_granted("ROLE_ADMIN")',
+            inputFormats: ['multipart' => ['multipart/form-data']],
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN")',
@@ -60,7 +67,7 @@ class Movie
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read','movie:write'])]
     #[Assert\NotBlank(message: 'Category is required')]
     private ?Category $category = null;
 
@@ -70,30 +77,30 @@ class Movie
     private Collection $actors;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['movie:read', 'actor:read', 'category:read'])]
+    #[Groups(['movie:read', 'actor:read', 'category:read','movie:write'])]
     #[Assert\NotBlank(message: 'Title is required')]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read','movie:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, options: ['format' => 'Y-m-d'])]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read','movie:write'])]
     #[Assert\NotBlank(message: 'Release date is required')]
     private ?\DateTimeInterface $releaseDate = null;
 
-    #[ORM\Column]
-    #[Groups(['movie:read'])]
-    #[Assert\NotBlank(message: 'Duration is required')]
-    #[ApiFilter(RangeFilter::class)]
-    private ?int $duration = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['movie:read','movie:write'])]
+    private ?string $duration = null;
 
-    #[Vich\UploadableField(mapping: 'movies', fileNameProperty: 'imageName')]
+    #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName')]
+    #[Groups(['movie:read','movie:write'])]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['movie:read'])]
     private ?string $imageName = null;
 
     #[ORM\Column(nullable: true)]
@@ -213,9 +220,9 @@ class Movie
     {
         $this->imageName = $imageName;
     }
-
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
+
 }
