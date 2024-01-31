@@ -23,5 +23,6 @@ jobs:
               cd symfony-s5
               git pull
               composer install
-              php bin/console c:c
               php bin/console d:s:u --force
+              php bin/console doctrine:fixtures:load
+              php bin/console c:c
