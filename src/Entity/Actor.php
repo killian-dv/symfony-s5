@@ -50,16 +50,16 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['movie:read', 'actor:read'])]
+    #[Groups(['movie:read', 'movie:write', 'actor:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['movie:read', 'actor:read'])]
+    #[Groups(['movie:read','movie:write', 'actor:read'])]
     #[Assert\NotBlank(message: 'First name is required')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['movie:read', 'actor:read'])]
+    #[Groups(['movie:read', 'movie:write',  'actor:read'])]
     #[Assert\NotBlank(message: 'Last name is required')]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $lastName = null;
