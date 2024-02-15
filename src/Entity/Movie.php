@@ -26,13 +26,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[Vich\Uploadable]
 #[ApiResource(
-    normalizationContext: [
-        'groups' => ['movie:read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['movie:write'],
-    ],
-    security: "is_granted('ROLE_USER')",
     operations: [
         new GetCollection(
             security: 'is_granted("ROLE_USER")',
@@ -43,19 +36,29 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             serialize: MovieNormalizer::class,
         ),
         new Patch(
+            inputFormats: ['multipart' => ['multipart/form-data']],
             security: 'is_granted("ROLE_ADMIN")',
         ),
         new Post(
-            security: 'is_granted("ROLE_ADMIN")',
             inputFormats: ['multipart' => ['multipart/form-data']],
+            security: 'is_granted("ROLE_ADMIN")',
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN")',
         ),
-        new Put(
+        new Post(
+            uriTemplate: '/movies/{id}',
+            inputFormats: ['multipart' => ['multipart/form-data']],
             security: 'is_granted("ROLE_ADMIN")',
         )
-    ]
+    ],
+    normalizationContext: [
+        'groups' => ['movie:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['movie:write'],
+    ],
+    security: "is_granted('ROLE_USER')"
 )]
 
 class Movie
@@ -72,7 +75,7 @@ class Movie
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:write'])]
     #[Assert\NotBlank(message: 'At least one actor is required')]
     private Collection $actors;
 
