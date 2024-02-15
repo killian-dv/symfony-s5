@@ -38,9 +38,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/auth, roles: PUBLIC_ACCESS }
-        - { path: ^/uploads,  roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api,  roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/uploads, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:
         ROLE_USER: [ ROLE_MEMBER ]
