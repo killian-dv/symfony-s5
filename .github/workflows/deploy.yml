@@ -18,6 +18,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: |
+            sudo -i
             cd /var/www/
             git clone git@github.com:killian-dv/symfony-s5.git
             cd symfony-s5
