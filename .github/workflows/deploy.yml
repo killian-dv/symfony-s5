@@ -18,8 +18,9 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: |
-            cd public_html/
-            git clone git@github.com:killian-dv/symfony-s5.git
+            cd /var/www/
+            sudo git clone git@github.com:killian-dv/symfony-s5.git
+            sudo chown -R mmi21g05:mmi21g05 /var/www/symfony-s5
             cd symfony-s5
             git pull
             composer install
