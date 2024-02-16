@@ -27,6 +27,9 @@ final class MovieNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $baseUrl = $this->urlGenerator->generate('app_demo', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
+        // Supprimer 'index.php' de l'URL si présent
+        $baseUrl = str_replace('index.php', '', $baseUrl);
+
         if ($object->getImageName() !== null) {
             $object->setImageName($baseUrl . $this->uploaderHelper->asset($object, 'imageFile'));
         }
